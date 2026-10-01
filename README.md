@@ -1,1 +1,3 @@
-# viz_and_eda
+# vizualization and EDA
+
+this is for p8105
