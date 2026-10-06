@@ -203,3 +203,70 @@ ggp_seasonal =
     ## (`geom_point()`).
 
 ![](02_vizualization_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
+## Data manipulation
+
+Start with factors
+
+Boxplots!
+
+``` r
+weather_df |>
+  mutate(name = fct_relevel(name, c("Molokai_Hi", "CentralPark_NY", "Waterhole_WA"))) |>
+  ggplot(aes(x = name, y = tmax)) + 
+  geom_boxplot()
+```
+
+    ## Warning: There was 1 warning in `mutate()`.
+    ## ℹ In argument: `name = fct_relevel(name, c("Molokai_Hi", "CentralPark_NY",
+    ##   "Waterhole_WA"))`.
+    ## Caused by warning:
+    ## ! 1 unknown level in `f`: Molokai_Hi
+
+    ## Warning: Removed 17 rows containing non-finite outside the scale range
+    ## (`stat_boxplot()`).
+
+![](02_vizualization_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
+``` r
+weather_df |>
+  mutate(name = fct_reorder(name, tmax)) |>
+  ggplot(aes(x = name, y = tmax)) + 
+  geom_boxplot()
+```
+
+    ## Warning: There was 1 warning in `mutate()`.
+    ## ℹ In argument: `name = fct_reorder(name, tmax)`.
+    ## Caused by warning:
+    ## ! `fct_reorder()` removing 17 missing values.
+    ## ℹ Use `.na_rm = TRUE` to silence this message.
+    ## ℹ Use `.na_rm = FALSE` to preserve NAs.
+
+    ## Warning: Removed 17 rows containing non-finite outside the scale range
+    ## (`stat_boxplot()`).
+
+![](02_vizualization_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+Making a distribution plot
+
+``` r
+weather_df |>
+  select(name, tmax, tmin) |> 
+  pivot_longer(
+    tmax:tmin, 
+    names_to = "observation", 
+    values_to = "temp"
+  ) |> 
+  ggplot(aes(x = temp, fill = observation)) + 
+  geom_density(alpha = 0.5) + 
+  facet_grid(. ~ name)
+```
+
+    ## Warning: Removed 34 rows containing non-finite outside the scale range
+    ## (`stat_density()`).
+
+![](02_vizualization_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+Make an FAS plot.
+
+FIND IN HIS CODE ON HIS GITHUB

@@ -143,7 +143,42 @@ ggp_seasonal =
 (ggp_tmax_tmin + ggp_prop_density) / ggp_seasonal
 ```
 
+## Data manipulation 
 
+Start with factors
 
+Boxplots!
+
+```{r}
+weather_df |>
+  mutate(name = fct_relevel(name, c("Molokai_Hi", "CentralPark_NY", "Waterhole_WA"))) |>
+  ggplot(aes(x = name, y = tmax)) + 
+  geom_boxplot()
+```
+
+```{r}
+weather_df |>
+  mutate(name = fct_reorder(name, tmax)) |>
+  ggplot(aes(x = name, y = tmax)) + 
+  geom_boxplot()
+```
+
+Making a distribution plot 
+```{r}
+weather_df |>
+  select(name, tmax, tmin) |> 
+  pivot_longer(
+    tmax:tmin, 
+    names_to = "observation", 
+    values_to = "temp"
+  ) |> 
+  ggplot(aes(x = temp, fill = observation)) + 
+  geom_density(alpha = 0.5) + 
+  facet_grid(. ~ name)
+```
+
+Make an FAS plot. 
+
+FIND IN HIS CODE ON HIS GITHUB 
 
 
